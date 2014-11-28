@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<script type="text/javascript" src="https://raw.githubusercontent.com/ankane/chartkick.js/master/chartkick.js"></script>
+		<script src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="chartkick.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script>
 			$(function() {
@@ -9,7 +10,28 @@
 				  		.done(function(data) {
 							console.log(data);
 							var json= [];
-							for(
+							var labels = data.fields;
+							for(var i=1;i<labels.length;i++) {
+								var season = labels[i]['label'];
+								json = json.concat({ 'name' : season, 'data' : {} });
+							}
+							var temp  = data.data;
+							for(var i=0;i<temp.length;i++) {
+								var year = temp[i][0];
+								var annual = temp[i][1];
+								var janfeb = temp[i][2];
+								var marmay = temp[i][3];
+								var junsep = temp[i][4];
+								var octdec = temp[i][5];
+								var pair = { year : annual };
+								json[0].data[year] = annual;
+								json[1].data[year] = janfeb;
+								json[2].data[year] = marmay;
+								json[3].data[year] = junsep;
+								json[4].data[year] = octdec;	
+							}
+							new Chartkick.LineChart('chart',json);
+							console.log(json);
 					       	 })
 						 .fail(function() {
 							//alert( "error" );
