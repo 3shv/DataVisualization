@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<!-- <script src="http://code.highcharts.com/highcharts.js"></script> -->
 		<script src="http://www.google.com/jsapi"></script>
 		<script type="text/javascript" src="chartkick.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -13,7 +14,7 @@
 							var labels = data.fields;
 							for(var i=1;i<labels.length;i++) {
 								var season = labels[i]['label'];
-								json = json.concat({ 'name' : season, 'data' : {} });
+								json = json.concat({ 'name' : season, 'data' : [] });
 							}
 							var temp  = data.data;
 							for(var i=0;i<temp.length;i++) {
@@ -24,13 +25,13 @@
 								var junsep = temp[i][4];
 								var octdec = temp[i][5];
 								var pair = { year : annual };
-								json[0].data[year] = annual;
-								json[1].data[year] = janfeb;
-								json[2].data[year] = marmay;
-								json[3].data[year] = junsep;
-								json[4].data[year] = octdec;	
+								json[0].data = json[0].data.concat([[ year , annual]]);
+								json[1].data = json[1].data.concat([[ year , janfeb]]);
+								json[2].data = json[2].data.concat([[ year , marmay]]);
+								json[3].data = json[3].data.concat([[ year , junsep]]);
+								json[4].data = json[4].data.concat([[ year , octdec]]);	
 							}
-							new Chartkick.LineChart('chart',json);
+							new Chartkick.LineChart('chart',json,{"discrete" :true});
 							console.log(json);
 					       	 })
 						 .fail(function() {
@@ -43,6 +44,6 @@
 		</script>
 	</head>
 	<body>
-		<div id="chart" style="height: 300px;"></div>
+		<div id="chart" style="height: 100%; width: 100%"></div>
 	</body>
 </html>
